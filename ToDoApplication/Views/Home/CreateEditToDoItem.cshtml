@@ -1,2 +1,14 @@
 ﻿@{
+	ViewData["Title"] = "UpdateToDoList";
 }
+
+<h1>UpdateToDoList</h1>
+<div>
+	<form asp-controller="Home" asp-action="CreateEditToDoItemForm">
+		<div class="form-group">
+			<label>Task Description: </label>
+			<input type="text" name="description" class="form-control" />
+		</div>
+		<button type="submit" class="btn btn-primary">Submit</button>
+	</form>
+</div>

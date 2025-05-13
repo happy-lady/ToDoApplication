@@ -18,6 +18,16 @@ namespace ToDoApplication.Controllers
             return View();
         }
 
+        public IActionResult CreateEditToDoItem()
+        {
+            return View();
+        }
+
+        public IActionResult CreateEditToDoItemForm()
+        {
+            return RedirectToAction("Index");
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

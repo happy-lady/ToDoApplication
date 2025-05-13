@@ -1,7 +1,15 @@
 ﻿@{
-    ViewData["Title"] = "ToDo Dashboard";
+    ViewData["Title"] = "ToDoDashboard";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
+    <h1 class="display-4">Welcome!</h1>
+    <table class="table">
+    <th>
+        <td>Done</td>
+        <td>Description</td>
+        <td>Actions</td>
+    </th>
+</table>
 </div>
+<a asp-controller="Home" asp-action="CreateEditToDoItem">Update Task List</a>
