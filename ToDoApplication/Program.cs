@@ -1,3 +1,8 @@
+using Microsoft.AspNetCore.Identity;
+using ToDoApplication.Data;
+using ToDoApplication.Models;
+using Microsoft.EntityFrameworkCore;
+
 namespace ToDoApplication
 {
     public class Program
@@ -9,6 +14,18 @@ namespace ToDoApplication
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
+            
+
+            builder.Services.AddAuthorization();
+            builder.Services.AddAuthentication().AddCookie(IdentityConstants.ApplicationScheme);
+
+            builder.Services.AddIdentityCore<User>()
+                .AddEntityFrameworkStores<ToDoAppDbContext>()
+                .AddApiEndpoints();
+
+            builder.Services.AddDbContext<ToDoAppDbContext>(options =>
+                options.UseNpgsql(builder.Configuration.GetConnectionString("Database")));
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -19,8 +36,6 @@ namespace ToDoApplication
             app.UseStaticFiles();
 
             app.UseRouting();
-
-            app.UseAuthorization();
 
             app.MapControllerRoute(
                 name: "default",
