@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ToDoApplication.Models;
 
@@ -20,7 +21,7 @@ namespace ToDoApplication.Data
             builder.Entity<User>().Property(u => u.FirstName).HasMaxLength(10);
             builder.Entity<User>().Property(u => u.LastName).HasMaxLength(10);
 
-            builder.HasDefaultSchema("identity");
+            builder.Entity<IdentityUser>().ToTable("AspNetUsers", schema: "identity");
         }
     }
 }
