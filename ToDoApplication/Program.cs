@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Identity;
 using ToDoApplication.Data;
 using ToDoApplication.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.Extensions.Configuration;
 
 namespace ToDoApplication
 {
@@ -14,14 +16,24 @@ namespace ToDoApplication
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
-            
-
             builder.Services.AddAuthorization();
-            builder.Services.AddAuthentication().AddCookie(IdentityConstants.ApplicationScheme);
 
-            builder.Services.AddIdentityCore<User>()
+            builder.Services.ConfigureApplicationCookie
+                (options =>
+                {
+                    options.LoginPath = "/Account/Login";
+                    options.AccessDeniedPath = "/Account/AccessDenied";
+                    options.ExpireTimeSpan = TimeSpan.FromDays(7);
+                }
+                );
+
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie();
+
+            builder.Services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<ToDoAppDbContext>()
-                .AddApiEndpoints();
+                .AddApiEndpoints()
+                .AddDefaultTokenProviders();
 
             builder.Services.AddDbContext<ToDoAppDbContext>(options =>
                 options.UseNpgsql(builder.Configuration.GetConnectionString("Database")));

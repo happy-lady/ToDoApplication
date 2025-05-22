@@ -6,6 +6,10 @@ using ToDoApplication.Data;
 using ToDoApplication.Models;
 using BCrypt;
 using Npgsql;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace ToDoApplication.Controllers
 {
@@ -25,21 +29,31 @@ namespace ToDoApplication.Controllers
         }
 
         [HttpPost]
-        public User Login(string username, string password)
+        public async Task<IActionResult> Login(string username, string password)
         {
-            if (username != null || password != null)
+            var user = _context.Users.FirstOrDefault(u => u.UserName == username);
+            if (username == null || !BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
             {
-                Login();
+                // return Unauthorized("Invalid credentials");
+                return Unauthorized(new { message = "Invalid credentials" });
             }
-            else
+            var claims = new List<Claim>
             {
-                return _context.Users
-                .FirstOrDefault(u => u.UserName == username && u.PasswordHash == password);
-            }
-            return null;
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+            };
+
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var authProperties = new AuthenticationProperties { IsPersistent = true };
+
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(claimsIdentity), authProperties);
+
+            return RedirectToAction("Index", "Home");
         }
 
-        [HttpPost]
+        // Possibly add this when working on the frontend | TODO
+        /*[HttpPost]
         public IActionResult Login([FromBody] LoginRequest loginRequest)
         {
             // TODO - Verify this is working next.
@@ -50,7 +64,7 @@ namespace ToDoApplication.Controllers
 
             // If authentication is successful, you can return user data or a JWT token
             return Ok(new { message = "Login successful", user = user.UserName });
-        }
+        }*/
 
         public IActionResult LogInUser(string username, string password)
         {
@@ -82,9 +96,20 @@ namespace ToDoApplication.Controllers
                 UserName = model.Username,
                 PasswordHash = hashedPassword
             };
-
+            // Console.WriteLine($"Database Provider: {_context.Database.ProviderName}");
+            // Console.WriteLine($"New User: {user}");
             _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+            var result = await _context.SaveChangesAsync();
+
+            // Console.WriteLine($"SaveChangesAsync() result: {result}");
+
+            if (result == 0)
+            {
+                Console.WriteLine("User was not saved.");
+                return BadRequest("User was not saved.");
+            }
+
+            // Console.WriteLine($"User {user.UserName} registered successfully.");
             return RedirectToAction("Login");
         }
 

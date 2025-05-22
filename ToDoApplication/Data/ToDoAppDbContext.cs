@@ -20,8 +20,6 @@ namespace ToDoApplication.Data
             base.OnModelCreating(builder);
             builder.Entity<User>().Property(u => u.FirstName).HasMaxLength(10);
             builder.Entity<User>().Property(u => u.LastName).HasMaxLength(10);
-
-            builder.Entity<IdentityUser>().ToTable("AspNetUsers", schema: "identity");
         }
     }
 }
