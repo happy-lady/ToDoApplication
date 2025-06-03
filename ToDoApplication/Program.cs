@@ -3,7 +3,6 @@ using ToDoApplication.Data;
 using ToDoApplication.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.Extensions.Configuration;
 
 namespace ToDoApplication
 {
@@ -24,13 +23,14 @@ namespace ToDoApplication
                     options.LoginPath = "/Account/Login";
                     options.AccessDeniedPath = "/Account/AccessDenied";
                     options.ExpireTimeSpan = TimeSpan.FromDays(7);
+                    options.Cookie.HttpOnly = true;
                 }
                 );
 
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie();
 
-            builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+            builder.Services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<ToDoAppDbContext>()
                 .AddApiEndpoints()
                 .AddDefaultTokenProviders();
@@ -48,6 +48,9 @@ namespace ToDoApplication
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.MapControllerRoute(
                 name: "default",

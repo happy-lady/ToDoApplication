@@ -17,11 +17,15 @@ namespace ToDoApplication.Controllers
     {
         private readonly ILogger<AccountController> _logger;
         private readonly ToDoAppDbContext _context;
+        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<User> _userManager;
 
-        public AccountController(ILogger<AccountController> logger, ToDoAppDbContext context)
+        public AccountController(ILogger<AccountController> logger, ToDoAppDbContext context, SignInManager<User> signInManager, UserManager<User> userManager)
         {
             _logger = logger;
             _context = context;
+            _signInManager = signInManager;
+            _userManager = userManager;
         }
         public IActionResult Login()
         {
@@ -31,23 +35,14 @@ namespace ToDoApplication.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(string username, string password)
         {
-            var user = _context.Users.FirstOrDefault(u => u.UserName == username);
-            if (username == null || !BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
+            var result = await _signInManager.PasswordSignInAsync(username, password, isPersistent: true, lockoutOnFailure: false);
+
+            if (!result.Succeeded)
             {
-                // return Unauthorized("Invalid credentials");
                 return Unauthorized(new { message = "Invalid credentials" });
             }
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, user.UserName),
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
-            };
-
-            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            var authProperties = new AuthenticationProperties { IsPersistent = true };
-
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-                new ClaimsPrincipal(claimsIdentity), authProperties);
+            Console.WriteLine($"Typed user: {username}");
+            Console.WriteLine($"User IsAuthenticated: {HttpContext.User.Identity.IsAuthenticated}");
 
             return RedirectToAction("Index", "Home");
         }
@@ -66,9 +61,9 @@ namespace ToDoApplication.Controllers
             return Ok(new { message = "Login successful", user = user.UserName });
         }*/
 
-        public IActionResult LogInUser(string username, string password)
+        public async Task<IActionResult> LogInUser(string username, string password)
         {
-            var test = Login(username, password);
+            var test = await Login(username, password);
             return RedirectToAction("Index", "Home");
         }
         public IActionResult UserRegistration()
@@ -86,7 +81,6 @@ namespace ToDoApplication.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-
             var hashedPassword = BCrypt.Net.BCrypt.HashPassword(model.Password);
 
             var user = new User
@@ -94,22 +88,20 @@ namespace ToDoApplication.Controllers
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 UserName = model.Username,
-                PasswordHash = hashedPassword
             };
-            // Console.WriteLine($"Database Provider: {_context.Database.ProviderName}");
-            // Console.WriteLine($"New User: {user}");
             _context.Users.Add(user);
-            var result = await _context.SaveChangesAsync();
+            var result = await _userManager.CreateAsync(user, model.Password);
 
-            // Console.WriteLine($"SaveChangesAsync() result: {result}");
-
-            if (result == 0)
+            if (!result.Succeeded)
             {
-                Console.WriteLine("User was not saved.");
-                return BadRequest("User was not saved.");
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                    Console.WriteLine(error.Description);
+                }
+                return BadRequest(ModelState);
             }
 
-            // Console.WriteLine($"User {user.UserName} registered successfully.");
             return RedirectToAction("Login");
         }
 
