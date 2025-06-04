@@ -17,7 +17,7 @@ A full-stack ToDo application (in progress) starting with an **ASP.NET Core** ba
 ### ✅ Technologies in Use
 - [X] ASP.NET Core
 - [ ] React *(planned)*
-- [ ] PostgreSQL *(planned)*
+- [X] PostgreSQL
 - [ ] Docker *(planned)*
 
 ---
@@ -32,8 +32,8 @@ A full-stack ToDo application (in progress) starting with an **ASP.NET Core** ba
 
 
 #### 🔁 Backend - Planned CRUD Operations
-  - [ ] Register new user
-  - [ ] Login
+  - [X] Register new user
+  - [X] Login
   - [ ] Get user’s todo list
   - [ ] Check/uncheck todo items
   - [ ] Add new todo item
@@ -70,8 +70,8 @@ React will be used for the final frontend interface once backend logic is comple
 ### SQL Services & Containers
 
 #### 🧱 Planned: Database & Docker Integration
-- [ ] Set up PostgreSQL
-- [ ] Connect backend to database
+- [X] Set up PostgreSQL
+- [X] Connect backend to database
 - [ ] Add Docker support
 - [ ] Create `docker-compose.yml` for orchestration
 
