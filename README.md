@@ -48,8 +48,8 @@ Using Razor Pages for quick UI while backend is under development.
 - [X] Create working routes (Razor)
 - [X] Create login page (Razor)
 - [X] Create user registration page (Razor)
-- [ ] Create to-do list page (Razor)
-- [ ] Create "add task" page (Razor)
+- [X] Create to-do list page (Razor)
+- [X] Create "add task" page (Razor)
 
 #### 💻 Frontend (React – Planned Migration)
 React will be used for the final frontend interface once backend logic is complete.
