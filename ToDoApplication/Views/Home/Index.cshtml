@@ -2,8 +2,17 @@
     ViewData["Title"] = "ToDoDashboard";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome!</h1>
+@if (User.Identity.IsAuthenticated)
+{
+    <h1 class="display-4">Welcome! @User.Identity.Name</h1>
+}
+else
+{
+    <h1 class="display-4">Welcome! Guest</h1>
+}
+
+<!--<div class="text-center">
+    <h1 class="display-4">Welcome! @User.Identity.Name</h1>
     <table class="table">
     <th>
         <td>Done</td>
@@ -13,3 +22,4 @@
 </table>
 </div>
 <a asp-controller="Home" asp-action="CreateEditToDoItem">Update Task List</a>
+-->

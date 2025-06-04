@@ -70,9 +70,9 @@ React will be used for the final frontend interface once backend logic is comple
 ### SQL Services & Containers
 
 #### 🧱 Planned: Database & Docker Integration
-- [X] Set up PostgreSQL
-- [X] Connect backend to database
-- [ ] Add Docker support
+- [X] Set up PostgreSQL for local use
+- [X] Connect backend to database (locally installed)
+- [ ] Convert to Docker support
 - [ ] Create `docker-compose.yml` for orchestration
 
 ---
@@ -81,4 +81,4 @@ React will be used for the final frontend interface once backend logic is comple
 - Currently using **Visual Studio** and the built-in debugger for development.
 - Razor Pages are being used temporarily for UI testing during backend development.
 - React will replace Razor once API logic is stable.
-- Database and container support (PostgreSQL, Docker) will be added later.
+- Database and container support (PostgreSQL on Docker) will be added later.
