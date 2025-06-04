@@ -1,6 +1,6 @@
 # ToDoApplication
 
-A full-stack ToDo application (in progress) starting with an **ASP.NET Core** backend. Frontend (React), PostgreSQL, and Docker support will be added later.
+A full-stack ToDo application (in progress) starting with an **ASP.NET Core** backend. Frontend (React), PostgreSQL, and Docker will be all be implemented eventually.
 
 ---
 
@@ -10,6 +10,50 @@ A full-stack ToDo application (in progress) starting with an **ASP.NET Core** ba
 2. Set the ASP.NET project as the startup project.
 3. Press `F5` or click **Start Debugging** to run the app.
 
+## 🚀 Running the Project (Using Docker)
+
+### 🔹 Option 1: Run via Docker Compose
+
+1. Make sure Docker is running.
+2. In your terminal, navigate to the project root and run:
+
+```bash
+docker compose up --build
+```
+
+3. Once containers are up, open your browser and go to:
+http://localhost:5000
+
+### 🔹 Option 2: Run via Visual Studio Debugger
+
+1. Open the solution (`.sln`) file in **Visual Studio**.
+2. Set the Container (Dockerfile) as the startup project.
+3. Press `F5` or click **Start Debugging** to run the app.
+
+
+### 🛠 Troubleshooting Docker & EF Core
+
+If you encounter errors like:
+
+> `relation "AspNetUserRoles" does not exist`
+
+It usually means the database migrations haven't been applied.  
+If migrations are already set up (e.g., included in the project), run the following 
+commands to apply them:
+
+```powershell
+$env:ConnectionStrings__DefaultConnection="Host=<host>;Port=<port>;Database=<database>;Username=<username>;Password=<password>"
+dotnet ef database update
+```
+
+If no migrations exist yet, you'll need to create them first:
+
+```powershell
+$env:ConnectionStrings__DefaultConnection="Host=<host>;Port=<port>;Database=<database>;Username=<username>;Password=<password>"
+dotnet ef migrations add InitialCreate
+dotnet ef database update
+```
+
 ---
 
 ## 🛠️ Project Progress
@@ -18,7 +62,7 @@ A full-stack ToDo application (in progress) starting with an **ASP.NET Core** ba
 - [X] ASP.NET Core
 - [ ] React *(planned)*
 - [X] PostgreSQL
-- [ ] Docker *(planned)*
+- [X] Docker
 
 ---
 
@@ -72,8 +116,8 @@ React will be used for the final frontend interface once backend logic is comple
 #### 🧱 Planned: Database & Docker Integration
 - [X] Set up PostgreSQL for local use
 - [X] Connect backend to database (locally installed)
-- [ ] Convert to Docker support
-- [ ] Create `docker-compose.yml` for orchestration
+- [X] Convert to Docker support
+- [X] Create `docker-compose.yml` for orchestration
 
 ---
 

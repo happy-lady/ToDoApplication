@@ -36,7 +36,7 @@ namespace ToDoApplication
                 .AddDefaultTokenProviders();
 
             builder.Services.AddDbContext<ToDoAppDbContext>(options =>
-                options.UseNpgsql(builder.Configuration.GetConnectionString("Database")));
+                options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             var app = builder.Build();
 
