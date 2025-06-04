@@ -154,7 +154,7 @@ namespace ToDoApplication.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("ToDoApplication.Models.User", b =>
+            modelBuilder.Entity("ToDoApplication.Models.UserDto", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -239,7 +239,7 @@ namespace ToDoApplication.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("ToDoApplication.Models.User", null)
+                    b.HasOne("ToDoApplication.Models.UserDto", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -248,7 +248,7 @@ namespace ToDoApplication.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("ToDoApplication.Models.User", null)
+                    b.HasOne("ToDoApplication.Models.UserDto", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -263,7 +263,7 @@ namespace ToDoApplication.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ToDoApplication.Models.User", null)
+                    b.HasOne("ToDoApplication.Models.UserDto", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -272,7 +272,7 @@ namespace ToDoApplication.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("ToDoApplication.Models.User", null)
+                    b.HasOne("ToDoApplication.Models.UserDto", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

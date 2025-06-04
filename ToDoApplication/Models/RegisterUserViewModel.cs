@@ -2,7 +2,7 @@
 
 namespace ToDoApplication.Models
 {
-    public class RegisterUserDto
+    public class RegisterUserViewModel
     {
         [Required]
         public string FirstName { get; set; }

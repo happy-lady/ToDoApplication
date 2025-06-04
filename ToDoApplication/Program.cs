@@ -30,7 +30,7 @@ namespace ToDoApplication
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie();
 
-            builder.Services.AddIdentity<User, IdentityRole>()
+            builder.Services.AddIdentity<UserDto, IdentityRole>()
                 .AddEntityFrameworkStores<ToDoAppDbContext>()
                 .AddApiEndpoints()
                 .AddDefaultTokenProviders();

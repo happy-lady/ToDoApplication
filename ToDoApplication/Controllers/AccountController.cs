@@ -17,10 +17,10 @@ namespace ToDoApplication.Controllers
     {
         private readonly ILogger<AccountController> _logger;
         private readonly ToDoAppDbContext _context;
-        private readonly SignInManager<User> _signInManager;
-        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<UserDto> _signInManager;
+        private readonly UserManager<UserDto> _userManager;
 
-        public AccountController(ILogger<AccountController> logger, ToDoAppDbContext context, SignInManager<User> signInManager, UserManager<User> userManager)
+        public AccountController(ILogger<AccountController> logger, ToDoAppDbContext context, SignInManager<UserDto> signInManager, UserManager<UserDto> userManager)
         {
             _logger = logger;
             _context = context;
@@ -30,21 +30,6 @@ namespace ToDoApplication.Controllers
         public IActionResult Login()
         {
             return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Login(string username, string password)
-        {
-            var result = await _signInManager.PasswordSignInAsync(username, password, isPersistent: true, lockoutOnFailure: false);
-
-            if (!result.Succeeded)
-            {
-                return Unauthorized(new { message = "Invalid credentials" });
-            }
-            Console.WriteLine($"Typed user: {username}");
-            Console.WriteLine($"User IsAuthenticated: {HttpContext.User.Identity.IsAuthenticated}");
-
-            return RedirectToAction("Index", "Home");
         }
 
         // Possibly add this when working on the frontend | TODO
@@ -61,29 +46,37 @@ namespace ToDoApplication.Controllers
             return Ok(new { message = "Login successful", user = user.UserName });
         }*/
 
-        public async Task<IActionResult> LogInUser(string username, string password)
+        [HttpPost]
+        public async Task<IActionResult> LogInUser(LoginUserViewModel model)
         {
-            var test = await Login(username, password);
+            var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, isPersistent: true, lockoutOnFailure: false);
+
+            if (!result.Succeeded)
+            {
+                return Unauthorized(new { message = "Invalid credentials" });
+            }
+
             return RedirectToAction("Index", "Home");
         }
         public IActionResult UserRegistration()
         {
             return View();
         }
-        public IActionResult LogOutUser()
+        public async Task<IActionResult> LogOutUser()
         {
+            await _signInManager.SignOutAsync();
             return RedirectToAction("Login");
         }
 
         [HttpPost]
-        public async Task<IActionResult> RegisterUser(RegisterUserDto model)
+        public async Task<IActionResult> RegisterUser(RegisterUserViewModel model)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             var hashedPassword = BCrypt.Net.BCrypt.HashPassword(model.Password);
 
-            var user = new User
+            var user = new UserDto
             {
                 FirstName = model.FirstName,
                 LastName = model.LastName,

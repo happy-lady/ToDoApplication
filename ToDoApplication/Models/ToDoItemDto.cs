@@ -6,7 +6,7 @@ namespace ToDoApplication.Models
     {
         public int Id { get; set; }
 
-        [ForeignKey("User")]
+        [ForeignKey("UserDto")]
         public int UserId { get; set; } // foreign key
         public string Description { get; set; }
         public bool IsCompleted { get; set; }
