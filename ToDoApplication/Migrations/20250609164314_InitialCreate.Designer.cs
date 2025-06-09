@@ -12,7 +12,7 @@ using ToDoApplication.Data;
 namespace ToDoApplication.Migrations
 {
     [DbContext(typeof(ToDoAppDbContext))]
-    [Migration("20250604170833_InitialCreate")]
+    [Migration("20250609164314_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

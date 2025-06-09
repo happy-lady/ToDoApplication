@@ -9,7 +9,7 @@ services:
             - db
         environment:
             - ASPNETCORE_ENVIRONMENT=Development
-            - ConnectionStrings__DefaultConnection=${CONNECTION_STRING}
+            - ConnectionStrings__DefaultConnection=${DefaultConnection}
     
     db:
         image: postgres:15

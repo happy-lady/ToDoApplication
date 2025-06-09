@@ -9,14 +9,17 @@
       "connectionId": "ConnectionStrings:DatabaseConnection",
       "dynamicId": null
     },
-    "secrets1": {
+    "secrets2": {
       "secretStore": null,
       "resourceId": null,
       "type": "secrets.user",
       "connectionId": null
     },
-    "secrets2": {
-      "type": "secrets.user"
+    "secrets1": {
+      "secretStore": null,
+      "resourceId": null,
+      "type": "secrets.user",
+      "connectionId": null
     }
   }
 }

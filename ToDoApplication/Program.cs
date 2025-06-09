@@ -35,6 +35,12 @@ namespace ToDoApplication
                 .AddApiEndpoints()
                 .AddDefaultTokenProviders();
 
+            builder.Configuration
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
+                .AddEnvironmentVariables()
+                .AddUserSecrets<Program>();  // Only needed for local development with secrets.json
+
             builder.Services.AddDbContext<ToDoAppDbContext>(options =>
                 options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
