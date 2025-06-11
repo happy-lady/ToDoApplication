@@ -78,9 +78,11 @@ dotnet ef database update
 #### 🔁 Backend - Planned CRUD Operations
   - [X] Register new user
   - [X] Login
-  - [ ] Get user’s todo list
-  - [ ] Check/uncheck todo items
-  - [ ] Add new todo item
+  - [X] Get user’s todo list
+  - [ ] Check/uncheck todo items updates within db
+  - [X] Add new todo item
+  - [ ] Delete todo item
+  - [ ] Update todo item
 
 ---
 
