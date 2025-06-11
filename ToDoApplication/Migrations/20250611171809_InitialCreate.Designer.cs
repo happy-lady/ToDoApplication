@@ -12,7 +12,7 @@ using ToDoApplication.Data;
 namespace ToDoApplication.Migrations
 {
     [DbContext(typeof(ToDoAppDbContext))]
-    [Migration("20250609164314_InitialCreate")]
+    [Migration("20250611171809_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -155,6 +155,30 @@ namespace ToDoApplication.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("ToDoApplication.Models.ToDoItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsCompleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ToDoItems");
                 });
 
             modelBuilder.Entity("ToDoApplication.Models.UserDto", b =>

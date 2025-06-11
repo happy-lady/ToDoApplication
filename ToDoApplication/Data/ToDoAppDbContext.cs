@@ -7,8 +7,8 @@ namespace ToDoApplication.Data
 {
     public class ToDoAppDbContext : IdentityDbContext<UserDto>
     {
-        /*DbSet<UserDto> Users { get; set; }
-        DbSet<ToDoItem> ToDoItems { get; set; }*/
+        /*DbSet<UserDto> Users { get; set; }*/
+        public DbSet<ToDoItem> ToDoItems { get; set; }
         public ToDoAppDbContext(DbContextOptions<ToDoAppDbContext> options)
             : base(options)
         {
