@@ -29,13 +29,13 @@ namespace ToDoApplication.Controllers
             return View(toDoItems);
         }
 
-        public IActionResult CreateEditToDoItem()
+        public IActionResult CreateToDoItem()
         {
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateEditToDoItemForm(ToDoItem item)
+        public async Task<IActionResult> CreateToDoItemForm(ToDoItem item)
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
@@ -48,7 +48,46 @@ namespace ToDoApplication.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
-        //[HttpDelete]
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteToDoItem(int id)
+        {
+            var item = await _context.ToDoItems.FindAsync(id);
+            if (item == null)
+            {
+                return NotFound();
+            }
+            _context.ToDoItems.Remove(item);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateToDoItemForm(int id, string description)
+        {
+            var item = await _context.ToDoItems.FindAsync(id);
+            if (item == null)
+            {
+                return NotFound();
+            }
+            item.Description = description;
+            _context.ToDoItems.Update(item);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
+
+
+        public async Task<IActionResult> UpdateToDoItem(int id)
+        {
+            var item = await _context.ToDoItems.FindAsync(id);
+            if (item == null)
+            {
+                return NotFound();
+            }
+            return View(item);
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

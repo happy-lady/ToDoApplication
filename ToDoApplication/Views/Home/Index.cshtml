@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<ToDoApplication.Models.ToDoItem>
+
+@{
     ViewData["Title"] = "ToDoDashboard";
 }
 
@@ -21,11 +23,21 @@
                     </td>
                     <td>@item.Description</td>
                     <td>
-                        <a href="#">Delete</a> | <a href="#">Update</a>
+                        <form asp-action="DeleteToDoItem" asp-controller="Home" method="post" style="display:inline;">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <button type="submit" class="btn btn-link">Delete</button>
+                        </form>
+                        |
+                        <form asp-action="UpdateToDoItem" asp-controller="Home" style="display:inline;">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <button type="submit" class="btn btn-link">Update</button>
+                        </form>
                     </td>
                 </tr>
             }
     </tbody>
 </table>
 </div>
-<a asp-controller="Home" asp-action="CreateEditToDoItem">Update Task List</a>
+<a asp-controller="Home" asp-action="CreateToDoItem">Add Task</a>

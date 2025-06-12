@@ -81,8 +81,8 @@ dotnet ef database update
   - [X] Get user’s todo list
   - [ ] Check/uncheck todo items updates within db
   - [X] Add new todo item
-  - [ ] Delete todo item
-  - [ ] Update todo item
+  - [X] Delete todo item
+  - [X] Update todo item
 
 ---
 
