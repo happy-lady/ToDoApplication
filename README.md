@@ -79,7 +79,7 @@ dotnet ef database update
   - [X] Register new user
   - [X] Login
   - [X] Get user’s todo list
-  - [ ] Check/uncheck todo items updates within db
+  - [X] Check/uncheck todo items updates within db
   - [X] Add new todo item
   - [X] Delete todo item
   - [X] Update todo item

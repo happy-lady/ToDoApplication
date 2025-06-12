@@ -78,7 +78,6 @@ namespace ToDoApplication.Controllers
             return RedirectToAction("Index");
         }
 
-
         public async Task<IActionResult> UpdateToDoItem(int id)
         {
             var item = await _context.ToDoItems.FindAsync(id);
@@ -87,6 +86,21 @@ namespace ToDoApplication.Controllers
                 return NotFound();
             }
             return View(item);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateTaskStatus(int id)
+        {
+            var item = await _context.ToDoItems.FindAsync(id);
+            if (item == null)
+            {
+                return NotFound();
+            }
+            item.IsCompleted = !item.IsCompleted;
+            _context.Update(item);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
