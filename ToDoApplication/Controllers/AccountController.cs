@@ -1,15 +1,8 @@
 ﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Storage;
 using ToDoApplication.Data;
 using ToDoApplication.Models;
-using BCrypt;
-using Npgsql;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
 
 namespace ToDoApplication.Controllers
 {
@@ -29,22 +22,12 @@ namespace ToDoApplication.Controllers
         }
         public IActionResult Login()
         {
+            if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index","Home");
+            }
             return View();
         }
-
-        // Possibly add this when working on the frontend | TODO
-        /*[HttpPost]
-        public IActionResult Login([FromBody] LoginRequest loginRequest)
-        {
-            // TODO - Verify this is working next.
-            var user = _context.Users.FirstOrDefault(u => u.UserName == loginRequest.Email);
-
-            if (user == null || !BCrypt.Net.BCrypt.Verify(loginRequest.Password, user.PasswordHash))
-                return Unauthorized("Invalid credentials");
-
-            // If authentication is successful, you can return user data or a JWT token
-            return Ok(new { message = "Login successful", user = user.UserName });
-        }*/
 
         [HttpPost]
         public async Task<IActionResult> LogInUser(LoginUserViewModel model)
@@ -73,6 +56,12 @@ namespace ToDoApplication.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+
+            var existingUser = await _userManager.FindByNameAsync(model.Username);
+            if (existingUser != null)
+            {
+                return Unauthorized(new { message = "Username taken" });
+            }
 
             var hashedPassword = BCrypt.Net.BCrypt.HashPassword(model.Password);
 
