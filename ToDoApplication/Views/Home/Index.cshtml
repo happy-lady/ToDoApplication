@@ -1,24 +1,46 @@
-﻿@{
+﻿@model IEnumerable<ToDoApplication.Models.ToDoItem>
+
+@{
     ViewData["Title"] = "ToDoDashboard";
 }
-
-@* @if (User.Identity.IsAuthenticated) *@
-@* { *@
-@*     <h1 class="display-4">Welcome! @User.Identity.Name</h1> *@
-@* } *@
-@* else *@
-@* { *@
-@*     <h1 class="display-4">Welcome! Guest</h1> *@
-@* } *@
 
 <div class="text-center">
     <h1 class="display-4">Welcome! @User.Identity.Name</h1>
     <table class="table">
-    <th>
-        <td>Done</td>
-        <td>Description</td>
-        <td>Actions</td>
-    </th>
+    <thead>
+        <tr>
+            <td>Done</td>
+            <td>Description</td>
+            <td>Actions</td>
+        </tr>
+    </thead>
+    <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <form asp-action="UpdateTaskStatus" asp-controller="Home" method="post">
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <input type="checkbox" @(item.IsCompleted ? "checked" : "") onchange="this.form.submit()"/>
+                        </form>
+                    </td>
+                    <td>@item.Description</td>
+                    <td>
+                        <form asp-action="DeleteToDoItem" asp-controller="Home" method="post" style="display:inline;">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <button type="submit" class="btn btn-link">Delete</button>
+                        </form>
+                        |
+                        <form asp-action="UpdateToDoItem" asp-controller="Home" style="display:inline;">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <button type="submit" class="btn btn-link">Update</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+    </tbody>
 </table>
 </div>
-<a asp-controller="Home" asp-action="CreateEditToDoItem">Update Task List</a>
+<a asp-controller="Home" asp-action="CreateToDoItem">Add Task</a>

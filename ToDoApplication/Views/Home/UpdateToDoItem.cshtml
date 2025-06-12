@@ -1,0 +1,21 @@
+﻿@model ToDoApplication.Models.ToDoItem
+
+@{
+	ViewData["Title"] = "Update Task";
+}
+
+<h1>Update Task</h1>
+<div>
+	<p>Current Task Description: @Model.Description</p>
+</div>
+<div>
+	<form asp-controller="Home" asp-action="UpdateToDoItemForm" method="post">
+		@Html.AntiForgeryToken()
+		<input type="hidden" name="id" value="@Model.Id" />
+		<div class="form-group">
+			<label>New Task Description: </label>
+			<input type="text" name="description" class="form-control" />
+		</div>
+		<button type="submit" class="btn btn-primary">Submit</button>
+	</form>
+</div>
